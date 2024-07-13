@@ -29,8 +29,8 @@ pipeline {
             steps {
                 script {
                     def bla = env.BRANCH_NAME
-                    sh "echo ${bla}"
                     def imageName = env.BRANCH_NAME == 'main' ? env.MAIN_DOCKER_IMAGE : env.DEV_DOCKER_IMAGE
+                    sh "echo ${bla}   ${imageName}"
                     sh "docker build -t ${imageName} ."
                 }
             }
@@ -38,11 +38,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def bla = env.BRANCH_NAME
-                    sh "echo ${bla}"
                     def containerPort = env.BRANCH_NAME == 'main' ? '3000' : '3001'
                     def imageName = env.BRANCH_NAME == 'main' ? env.MAIN_DOCKER_IMAGE : env.DEV_DOCKER_IMAGE
+                    def bla = env.BRANCH_NAME
                     sh '''
+                        echo ">>${bla}<<  >>${imageName}<<  >>${containerPort}<<"
                         docker ps -q --filter "ancestor=${imageName}" | xargs -r docker stop
                         docker ps -a -q --filter "ancestor=${imageName}" | xargs -r docker rm
                         docker run -d --expose ${containerPort} -p ${containerPort}:3000 ${imageName}
