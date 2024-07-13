@@ -7,6 +7,8 @@ pipeline {
         GIT_CREDENTIALS_ID = '0f0a50a3-ccfe-464e-9687-2fc6e2c3c235'
         MAIN_DOCKER_IMAGE = 'nodemain:v1.0'
         DEV_DOCKER_IMAGE = 'nodedev:v1.0'
+        MAIN_CONTAINER_NAME = 'main_app'
+        DEV_CONTAINER_NAME = 'dev_app'
     }
     stages {
         stage('Checkout') {
