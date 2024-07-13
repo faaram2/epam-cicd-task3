@@ -33,15 +33,17 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+         stage('Deploy') {
             steps {
                 script {
+                    def containerName = env.BRANCH_NAME == 'main' ? env.MAIN_CONTAINER_NAME : env.DEV_CONTAINER_NAME
                     def containerPort = env.BRANCH_NAME == 'main' ? '3000' : '3001'
                     def imageName = env.BRANCH_NAME == 'main' ? env.MAIN_DOCKER_IMAGE : env.DEV_DOCKER_IMAGE
                     sh """
-                        docker ps -q --filter "ancestor=${imageName}" | xargs -r docker stop
-                        docker ps -a -q --filter "ancestor=${imageName}" | xargs -r docker rm
-                        docker run -d --expose ${containerPort} -p ${containerPort}:3000 ${imageName}
+                        docker stop ${containerName} || true
+                        docker rm ${containerName} || true
+                        docker run -d --name ${containerName} --expose ${containerPort} -p ${containerPort}:3000 ${imageName}
+                        docker image prune -f
                     """
                 }
             }
