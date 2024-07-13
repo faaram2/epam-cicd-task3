@@ -43,6 +43,7 @@ pipeline {
                     def bla = env.BRANCH_NAME
                     sh '''
                         echo ">>${bla}<<  >>${imageName}<<  >>${containerPort}<<"
+                        env
                         docker ps -q --filter "ancestor=${imageName}" | xargs -r docker stop
                         docker ps -a -q --filter "ancestor=${imageName}" | xargs -r docker rm
                         docker run -d --expose ${containerPort} -p ${containerPort}:3000 ${imageName}
