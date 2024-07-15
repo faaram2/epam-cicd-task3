@@ -3,6 +3,7 @@ pipeline {
     tools {
         nodejs "node"
     }
+    
     environment {
         GIT_CREDENTIALS_ID = '0f0a50a3-ccfe-464e-9687-2fc6e2c3c235'
         MAIN_DOCKER_IMAGE = 'nodemain:v1.0'
