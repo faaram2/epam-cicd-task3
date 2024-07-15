@@ -18,6 +18,13 @@ pipeline {
                           userRemoteConfigs: [[credentialsId: "${env.GIT_CREDENTIALS_ID}", url: 'https://github.com/faaram2/epam-cicd-task3.git']]])
             }
         }
+        stage('Lint Dockerfile') {
+            steps {
+                script {
+                    sh 'hadolint Dockerfile'
+                }
+            }
+        }
         stage('Build') {
             steps {
                 sh 'npm install'
@@ -33,6 +40,15 @@ pipeline {
                 script {
                     def imageName = env.BRANCH_NAME == 'main' ? env.MAIN_DOCKER_IMAGE : env.DEV_DOCKER_IMAGE
                     sh "docker build -t ${imageName} ."
+                }
+            }
+        }
+        stage('Scan Docker Image for Vulnerabilities') {
+            steps {
+                script {
+                    def imageName = env.BRANCH_NAME == 'main' ? env.MAIN_DOCKER_IMAGE : env.DEV_DOCKER_IMAGE
+                    def vulnerabilities = sh(script: "trivy image --exit-code 0 --severity HIGH,MEDIUM,LOW --no-progress ${imageName}", returnStdout: true).trim()
+                    echo "Vulnerability Report:\n${vulnerabilities}"
                 }
             }
         }
@@ -57,9 +73,9 @@ pipeline {
         success {
             script {
                 if (env.BRANCH_NAME == 'main') {
-                    build job: 'Deploy_to_main', wait: false
+                    build job: 'main-deployment-pipeline', wait: false
                 } else if (env.BRANCH_NAME == 'dev') {
-                    build job: 'Deploy_to_dev', wait: false
+                    build job: 'dev-deployment-pipeline', wait: false
                 }
             }
         }
