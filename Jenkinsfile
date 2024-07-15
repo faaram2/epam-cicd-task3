@@ -73,9 +73,9 @@ pipeline {
         success {
             script {
                 if (env.BRANCH_NAME == 'main') {
-                    build job: 'Deploy-to-main', wait: false
+                    build job: 'Deploy_to_main', wait: false
                 } else if (env.BRANCH_NAME == 'dev') {
-                    build job: 'Deploy-to-dev', wait: false
+                    build job: 'Deploy_to_dev', wait: false
                 }
             }
         }
