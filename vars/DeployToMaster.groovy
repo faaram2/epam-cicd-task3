@@ -1,6 +1,11 @@
 def call(Map config = [:]) {
     pipeline {
-        agent any
+        agent {
+            docker {
+                image 'node:14'
+                args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount the Docker socket
+            }
+        }
         tools {
             nodejs "node"
         }
