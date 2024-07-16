@@ -28,6 +28,11 @@ def call(Map config = [:]) {
                     }
                 }
             }
+            stage('wait') {
+                steps {
+                    sh 'sleep 50000'
+                }
+            }
             stage('Build') {
                 steps {
                     sh 'npm install'
