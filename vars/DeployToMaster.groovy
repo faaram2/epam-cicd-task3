@@ -3,8 +3,11 @@ def call(Map config = [:]) {
         agent {
             docker {
                 image 'custom-node-tools2:7.8.0'
-                args ' -u root:root -v /var/run/docker.sock:/var/run/docker.sock' // Mount the Docker socket
+                args ' -u root:root -v /var/run/docker.sock:/var/run/docker.sock'
             }
+        }
+        tools {
+            nodejs "node"
         }
         environment {
             GIT_CREDENTIALS_ID = '0f0a50a3-ccfe-464e-9687-2fc6e2c3c235'
