@@ -3,7 +3,7 @@ def call(Map config = [:]) {
         agent {
             docker {
                 image 'custom-node-tools2:7.8.0'
-                args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount the Docker socket
+                args ' -u root:root -v /var/run/docker.sock:/var/run/docker.sock' // Mount the Docker socket
             }
         }
         environment {
