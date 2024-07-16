@@ -1,3 +1,3 @@
-@Library(['jenkinslib@master']) _
+@Library(['jenkinslib@main']) _
 
 DeployToMaster()
