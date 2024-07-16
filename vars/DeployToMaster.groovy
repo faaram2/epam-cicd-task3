@@ -6,9 +6,10 @@ def call(Map config = [:]) {
                 args ' -u root:root -v /var/run/docker.sock:/var/run/docker.sock'
             }
         }
-        tools {
-            nodejs "node"
-        }
+        //The below block should be used in case if agent is not a docker
+        //tools {
+        //   nodejs "node"
+        //}
         environment {
             GIT_CREDENTIALS_ID = '0f0a50a3-ccfe-464e-9687-2fc6e2c3c235'
             DOCKER_HUB_CREDENTIALS_ID = '43a4b6a6-4979-4f9a-946a-12200e5a5ba5'
